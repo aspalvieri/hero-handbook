@@ -3,6 +3,6 @@ exports.test = (req, res) => {
   db.query("SELECT * FROM users").then(users => {
     res.status(200).json(users.rows);
   }).catch(err => {
-    res.status(400).json({"error": err});
+    res.status(500).json({"error": err});
   });
 };

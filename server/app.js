@@ -9,7 +9,10 @@ const port = process.env.PORT || 5000;
 const db = require('./configs/db.config');
 
 let allowedOrigins = [
-  "http://localhost:3000"
+  "http://localhost:3000",
+  "https://aspalvieri.com",
+  "https://www.aspalvieri.com",
+  "https://hero.aspalvieri.com"
 ];
 app.use(cors({
   origin: function(origin, callback){
@@ -38,10 +41,10 @@ app.use((req, res, next) => {
 const routes = require("./routes/index");
 app.use("/api", routes);
 
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(path.join(__dirname, "client/build")));
 
 app.get(/^(?!.*_ah).*$/, (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
 app.listen(port, () => {

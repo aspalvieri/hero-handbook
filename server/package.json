@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "deploy": "gcloud app deploy --project hero-aspalvieri --quiet",
     "test": "SET NODE_ENV=test&& mocha tests/index.test.js --exit",
     "db_reset": "node db/scripts/resetdb.js --exit"
   },
