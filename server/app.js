@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const passport = require("passport");
 const cors = require("cors");
 const path = require("path");
 
@@ -10,6 +11,7 @@ const db = require('./configs/db.config');
 
 let allowedOrigins = [
   "http://localhost:3000",
+  "http://192.168.0.15:3000",
   "https://aspalvieri.com",
   "https://www.aspalvieri.com",
   "https://hero.aspalvieri.com"
@@ -37,6 +39,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport config
+require("./middleware/passport")(passport, db);
+
 // Our routes
 const routes = require("./routes/index");
 app.use("/api", routes);
@@ -51,4 +59,4 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
 });
 
-module.exports = { app };
+module.exports = { app, db };
