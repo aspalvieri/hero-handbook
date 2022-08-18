@@ -1,14 +1,25 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 exports.test = (req, res) => {
   const db = req.database;
+  return res.status(200).json(req.session);
   db.query("SELECT * FROM users").then(users => {
-    res.status(200).json(users.rows);
+    return res.status(200).json(users.rows);
   }).catch(err => {
-    res.status(500).json({"error": err});
+    return res.status(500).json({"error": err});
   });
 };
+
+exports.pass = (req, res) => {
+  const db = req.database;
+  const user = req.session.user;
+  db.query(`SELECT password FROM users WHERE id=${user.id} AND email='${user.email}'`).then(pass => {
+    return res.status(200).json(pass.rows[0]);
+  }).catch(err => {
+    console.log(err);
+    return res.status(400).json({ message: err });
+  });
+}
 
 exports.register = (req, res) => {
   // TODO: Form validation
@@ -17,7 +28,7 @@ exports.register = (req, res) => {
   const password2 = req.body.password2;
 
   if (password !== password2) {
-    res.status(400).json({ message: "Passwords don't match" });
+    return res.status(400).json({ message: "Passwords don't match" });
   }
 
   const db = req.database;
@@ -32,17 +43,21 @@ exports.register = (req, res) => {
         bcrypt.hash(password, salt, (err, hash) => {
           if (err) throw err;
           db.query(`INSERT INTO users(id, email, password) VALUES(DEFAULT, '${email}', '${hash}') RETURNING *`).then(user => {
-            res.status(200).json(user.rows[0]);
+            req.session.user = {
+              id: user.rows[0].id,
+              email: user.rows[0].email
+            };
+            return res.status(200).json({ user: req.session.user });
           }).catch(err => {
             console.log(err);
-            res.status(400).json({ message: err });
+            return res.status(400).json({ message: err });
           })
         });
       });
     }
   }).catch(err => {
     console.log(err);
-    res.status(400).json({ message: err });
+    return res.status(400).json({ message: err });
   });
 };
 
@@ -62,24 +77,11 @@ exports.login = (req, res) => {
     // Check password
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
-        // User matched
-        // Create JWT Payload, this data is stored in the token
-        const payload = {
-          //Change values here to control what user object has on frontend
+        req.session.user = {
           id: user.id,
           email: user.email
         };
-        // Sign token
-        jwt.sign(payload, process.env.SECRET, {
-            expiresIn: 31556926 // 1 year in seconds
-          },
-          (err, token) => {
-            res.status(200).json({
-              success: true,
-              token: "Bearer " + token
-            });
-          }
-        );
+        return res.status(200).json({ user: req.session.user });
       } 
       else {
         return res.status(400).json({ message: "Password incorrect" });
@@ -87,6 +89,23 @@ exports.login = (req, res) => {
     });
   }).catch(err => {
     console.log(err);
-    res.status(400).json({ message: err });
+    return res.status(400).json({ message: err });
   });
+};
+
+exports.logout = async (req, res) => {
+  try {
+    await req.session.destroy();
+    return res.sendStatus(200);
+  } catch (e) {
+    console.error(e);
+    return res.sendStatus(500);
+  }
+}
+
+exports.fetchUser = (req, res) => {
+  if (req.sessionID && req.session.user) {
+    return res.status(200).json({ user: req.session.user })
+  }
+  return res.sendStatus(403)
 };

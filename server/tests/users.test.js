@@ -2,7 +2,6 @@ const chai = require("chai")
 const chaiHttp = require("chai-http");
 const expect = chai.expect;
 const { app, db } = require("../app");
-const jwt = require("jsonwebtoken");
 
 chai.use(chaiHttp);
 //Useful functions: before, beforeEach, after, afterEach
@@ -24,6 +23,8 @@ describe("/users", () => {
       chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
+        const user = res.body.user;
+        expect(user.email).to.eq("test@test.com");
         expect(res.status).to.eq(200);
         done();
       });
@@ -52,8 +53,7 @@ describe("/users", () => {
       chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
-        const token = res.body.token.split(" ")[1];
-        const user = jwt.verify(token, process.env.SECRET);
+        const user = res.body.user;
         expect(user.id).to.eq(1);
         expect(res.status).to.eq(200);
         done();
@@ -67,8 +67,7 @@ describe("/users", () => {
       chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
-        const token = res.body.token.split(" ")[1];
-        const user = jwt.verify(token, process.env.SECRET);
+        const user = res.body.user;
         expect(user.id).to.eq(2);
         expect(res.status).to.eq(200);
         done();
