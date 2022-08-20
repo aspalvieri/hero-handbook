@@ -13,7 +13,7 @@ exports.test = (req, res) => {
 exports.pass = (req, res) => {
   const db = req.database;
   const user = req.session.user;
-  db.query(`SELECT password FROM users WHERE id=${user.id} AND email='${user.email}'`).then(pass => {
+  db.query("SELECT password FROM users WHERE id=$1 AND email=$2", [user.id, user.email]).then(pass => {
     return res.status(200).json(pass.rows[0]);
   }).catch(err => {
     console.log(err);
@@ -33,7 +33,7 @@ exports.register = (req, res) => {
 
   const db = req.database;
 
-  db.query(`SELECT * FROM users WHERE email='${email}' LIMIT 1`).then(users => {
+  db.query("SELECT id FROM users WHERE email=$1 LIMIT 1", [email]).then(users => {
     if (users.rows && users.rows.length >= 1) {
       return res.status(400).json({ message: "Email already exists" });
     }
@@ -42,7 +42,7 @@ exports.register = (req, res) => {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(password, salt, (err, hash) => {
           if (err) throw err;
-          db.query(`INSERT INTO users(id, email, password) VALUES(DEFAULT, '${email}', '${hash}') RETURNING *`).then(user => {
+          db.query("INSERT INTO users(id, email, password) VALUES(DEFAULT, $1, $2) RETURNING *", [email, hash]).then(user => {
             req.session.user = {
               id: user.rows[0].id,
               email: user.rows[0].email
@@ -68,7 +68,7 @@ exports.login = (req, res) => {
 
   const db = req.database;
   // Find user by email
-  db.query(`SELECT * FROM users WHERE email='${email}' LIMIT 1`).then(users => {
+  db.query("SELECT id, email, password FROM users WHERE email=$1 LIMIT 1", [email]).then(users => {
     // Check if user exists
     if (!users.rows || users.rows.length <= 0) {
       return res.status(404).json({ message: "Email not found" });
