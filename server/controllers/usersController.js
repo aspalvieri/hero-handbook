@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 
 exports.test = (req, res) => {
   const db = req.database;
-  return res.status(200).json(req.session);
   db.query("SELECT * FROM users").then(users => {
     return res.status(200).json(users.rows);
   }).catch(err => {

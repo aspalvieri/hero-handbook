@@ -8,9 +8,9 @@ const usersController = require("../controllers/usersController");
 //Routes
 router.get("/test", usersController.test);
 router.get("/pass", auth, usersController.pass);
+router.get("/fetchUser", usersController.fetchUser);
 router.post("/register", usersController.register);
 router.post("/login", usersController.login);
 router.post("/logout", usersController.logout);
-router.post("/fetch-user", usersController.fetchUser);
 
 module.exports = router;
