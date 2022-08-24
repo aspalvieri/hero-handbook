@@ -3,7 +3,7 @@ const configs = {
     SERVER_URL: "http://localhost:5000"
   },
   production: {
-    SERVER_URL: "https://api-dot-hero-aspalvieri.uc.r.appspot.com"
+    SERVER_URL: "https://api.hero.aspalvieri.com"
   }
 };
 

@@ -1,0 +1,7 @@
+dispatch:
+  # Frontend requests to the default service
+  - url: "hero.aspalvieri.com/*"
+    service: default
+  # API requests to the api service
+  - url: "api.hero.aspalvieri.com/*"
+    service: api

@@ -52,8 +52,10 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
+      httpOnly: true,
+      domain: (process.env.NODE_ENV === "production" ? ".hero.aspalvieri.com" : ""),
       maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
-    },
+    }
   })
 );
 
