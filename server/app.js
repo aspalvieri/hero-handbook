@@ -65,6 +65,11 @@ app.use("/api", routes);
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
+app.get("/_ah/warmup", (req, res) => {
+  console.log("Warmup requested.");
+  res.sendStatus(200);
+});
+
 app.get(/^(?!.*_ah).*$/, (req, res) => {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
