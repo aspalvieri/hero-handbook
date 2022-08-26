@@ -1,7 +1,7 @@
 // reset your database
 require("dotenv").config();
 const { Pool } = require("pg");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const SCHEMA_PATH = "./db/schemas";
 const SEEDS_PATH = "./db/seeds";
 

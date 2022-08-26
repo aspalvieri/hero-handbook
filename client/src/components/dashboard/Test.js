@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useReducer, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 import { config, requestConf } from "../../utils/Configs";
 
@@ -43,7 +43,7 @@ function Test() {
   });
   function handleLogin(e) {
     e.preventDefault();
-    axios.post(`${config.SERVER_URL}/api/users/login`, inputs, requestConf).then(res => {
+    axios.post(`${config.SERVER_URL}/users/login`, inputs, requestConf).then(res => {
       auth.setUser(res.data.user);
       console.log(res.data.user);
       navigate("/");
@@ -62,20 +62,10 @@ function Test() {
   };
 
   return (
-    <div style={{margin: "0 auto", padding: "16px", width: "768px", backgroundColor: "#EEE"}}>
-      <img src={require("../../assets/logo.png")} style={{width: "250px", margin: "0 auto", marginBottom: "30px", display: "block"}} alt="logo" />
-      {auth.user ? <h1>Logged in as: {auth.user.email}</h1> : null}
-      <Link to="/">Home</Link>
-      &nbsp;
-      <Link to="/test">Test</Link>
-      &nbsp;
-      {auth.user ? <Link to="/test2">Test 2</Link> : null}
-      &nbsp;
-      {auth.user ? <Link to="/logout">Logout</Link> : null}
-      <hr/>
+    <div>
       <h3>Login</h3>
       <form onSubmit={handleLogin}>
-        <input id="email" type="text" onChange={handleInputChange} />
+        <input className="mr-5" id="email" type="text" onChange={handleInputChange} />
         <input id="password" type="password" onChange={handleInputChange} />
         <input type="submit" />
       </form>

@@ -10,7 +10,7 @@ function AuthProvider(props) {
   const [fetchingUser, setFetchingUser] = useState(true);
 
   useEffect(() => {
-    axios.get(`${config.SERVER_URL}/api/users/fetchUser`, requestConf).then(res => {
+    axios.get(`${config.SERVER_URL}/users/fetchUser`, requestConf).then(res => {
       setUser(res.data.user);
     }).catch(err => {
       console.log(`No user session exists.`);

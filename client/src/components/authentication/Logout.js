@@ -9,7 +9,7 @@ function Logout(props) {
   const auth = useContext(AuthContext);
 
   useEffect(() => {
-    axios.post(`${config.SERVER_URL}/api/users/logout`, null, requestConf).then(() => {
+    axios.post(`${config.SERVER_URL}/users/logout`, null, requestConf).then(() => {
       auth.setUser(null);
       navigate("/");
     });

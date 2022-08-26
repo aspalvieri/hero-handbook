@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 exports.test = (req, res) => {
   const db = req.database;
@@ -74,7 +74,7 @@ exports.login = (req, res) => {
     }
     const user = users.rows[0];
     // Check password
-    bcrypt.compare(password, user.password).then(isMatch => {
+    bcrypt.compare(password, user.password, (err, isMatch) => {
       if (isMatch) {
         req.session.user = {
           id: user.id,

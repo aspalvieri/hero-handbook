@@ -61,7 +61,7 @@ app.use(
 
 // Our routes
 const routes = require("./routes/index");
-app.use("/api", routes);
+app.use("/", routes);
 
 app.use(express.static(path.join(__dirname, "client/build")));
 

@@ -5,7 +5,7 @@ const auth = require("../middleware/authorize");
 //Controller
 const usersController = require("../controllers/usersController");
 
-// /api/users/...
+// /users/...
 router.get("/test", usersController.test);
 router.get("/pass", auth, usersController.pass);
 router.get("/fetchUser", usersController.fetchUser);

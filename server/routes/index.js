@@ -5,7 +5,7 @@ const app = express();
 // Importing the pageRoutes
 const userRoutes = require("./users");
 
-// /api/...
+// /...
 app.use("/users", userRoutes);
 
 // Exporting the changes

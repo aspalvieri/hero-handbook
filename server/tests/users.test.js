@@ -20,7 +20,7 @@ describe("/users", () => {
         password: "123456",
         password2: "123456"
       };
-      chai.request(app).post("/api/users/register")
+      chai.request(app).post("/users/register")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -35,7 +35,7 @@ describe("/users", () => {
         password: "123456",
         password2: "123456"
       };
-      chai.request(app).post("/api/users/register")
+      chai.request(app).post("/users/register")
       .send(user)
       .end((err, res) => {
         expect(res.status).to.eq(400);
@@ -50,7 +50,7 @@ describe("/users", () => {
         email: "alex@email.com",
         password: "1234"
       };
-      chai.request(app).post("/api/users/login")
+      chai.request(app).post("/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -64,7 +64,7 @@ describe("/users", () => {
         email: "user@email.com",
         password: "123456"
       };
-      chai.request(app).post("/api/users/login")
+      chai.request(app).post("/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;

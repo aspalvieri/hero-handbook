@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import axios from "axios"
 import { config, requestConf } from "../../utils/Configs";
-import { AuthContext } from "../../providers/AuthProvider";
 
 function Home() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const auth = useContext(AuthContext);
 
   useEffect(() => {
     if (loading) {
-      axios.get(`${config.SERVER_URL}/api/users/test`, requestConf).then(res => {
+      axios.get(`${config.SERVER_URL}/users/test`, requestConf).then(res => {
         setData(res.data);
         setLoading(false);
       });
@@ -19,17 +16,7 @@ function Home() {
   }, [loading]);
 
   return (
-    <div style={{margin: "0 auto", padding: "16px", width: "768px", backgroundColor: "#EEE"}}>
-      <img src={require("../../assets/logo.png")} style={{width: "250px", margin: "0 auto", marginBottom: "30px", display: "block"}} alt="logo" />
-      {auth.user ? <h1>Logged in as: {auth.user.email}</h1> : null}
-      <Link to="/">Home</Link>
-      &nbsp;
-      <Link to="/test">Test</Link>
-      &nbsp;
-      {auth.user ? <Link to="/test2">Test 2</Link> : null}
-      &nbsp;
-      {auth.user ? <Link to="/logout">Logout</Link> : null}
-      <hr/>
+    <div>
       {loading ? <h1 style={{textAlign: "center"}}>Loading Data . . .</h1>
       : <div>
         <table style={{width: "50%", margin: "0 auto", textAlign: "center"}}>
