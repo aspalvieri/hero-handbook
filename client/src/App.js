@@ -29,7 +29,7 @@ function App() {
     <div className="h-screen flex flex-col">
       <AuthProvider>
           <Navbar />
-          <div className="lg:container mx-auto bg-gray-100 p-4">
+          <div className="lg:container lg:mx-auto bg-gray-100 p-4">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/test" element={<Test />} />
