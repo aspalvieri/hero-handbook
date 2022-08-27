@@ -1,8 +1,4 @@
-import axios from "axios";
-import React, { useContext, useReducer, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../providers/AuthProvider";
-import { config, requestConf } from "../../utils/Configs";
+import React, { useReducer, useRef } from "react";
 
 function Test() {
   const inputRef = useRef();
@@ -35,53 +31,36 @@ function Test() {
     inputRef.current.value = "";
   }
 
-  const auth = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: ""
-  });
-  function handleLogin(e) {
-    e.preventDefault();
-    axios.post(`${config.SERVER_URL}/users/login`, inputs, requestConf).then(res => {
-      auth.setUser(res.data.user);
-      console.log(res.data.user);
-      navigate("/");
-    }).catch(err => {
-      console.log(err.response.data.message);
-    });
-  }
-  const handleInputChange = (event) => {
-    const { id, value } = event.target;
-    setInputs(inputs => {
-      return {
-        ...inputs,
-        [id]: value
-      };
-    });
-  };
-
   return (
-    <div>
-      <h3>Login</h3>
-      <form onSubmit={handleLogin}>
-        <input className="mr-5" id="email" type="text" onChange={handleInputChange} />
-        <input id="password" type="password" onChange={handleInputChange} />
-        <input type="submit" />
-      </form>
-      <br/>
-      <h3>Task List</h3>
+    <div className="bg-white rounded-lg shadow col-span-12 md:col-span-8 lg:col-span-6 xl:col-span-4
+    xl:col-start-5 lg:col-start-4 md:col-start-3 p-6">
+      <h1 className="text-xl md:text-2xl font-bold">Task List</h1>
       <form onSubmit={handleSubmit}>
-        <input ref={inputRef} />
+        <input ref={inputRef} 
+          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg
+          block w-60 my-2 p-1.5 disabled:opacity-50" 
+        />
       </form>
-      <button onClick={() => dispatch({ type: "clear" })}>Clear</button>
-      &nbsp;
-      <button onClick={handleSubmit}>Add</button>
-      <ul>
+      <button onClick={() => dispatch({ type: "clear" })}
+        className="text-white bg-red-500 hover:bg-red-600
+        font-medium rounded-lg text-sm px-3 mr-2 py-1 text-center"
+      >
+        Clear All
+      </button>
+      <button onClick={handleSubmit}
+        className="text-white bg-bsgreen-500 hover:bg-bsgreen-600
+        font-medium rounded-lg text-sm px-3 py-1 text-center"
+      >
+        Add Task
+      </button>
+      <ul className="mt-3">
         {items.map((item, index) => (
-          <li key={item.id}>
+          <li key={item.id} className="my-1">
             {item.name}{" "}
-            <button onClick={() => dispatch({ type: "remove", index })}>
+            <button onClick={() => dispatch({ type: "remove", index })}
+              className="text-white bg-red-500 hover:bg-red-600
+              font-medium rounded-lg text-sm px-2 py-1 text-center"
+            >
               X
             </button>
           </li>

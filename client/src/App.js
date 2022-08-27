@@ -10,6 +10,8 @@ import Home from "./components/dashboard/Home";
 import Test from "./components/dashboard/Test";
 import Test2 from "./components/dashboard/Test2";
 import Logout from "./components/authentication/Logout";
+import Login from "./components/authentication/Login";
+import Register from "./components/authentication/Register";
 
 //Partial Components
 import Navbar from "./components/partials/Navbar";
@@ -29,10 +31,12 @@ function App() {
     <div className="h-screen flex flex-col">
       <AuthProvider>
           <Navbar />
-          <div className="lg:container lg:mx-auto bg-gray-100 p-4">
+          <div className="lg:container lg:mx-auto grid grid-cols-12 p-4">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/test" element={<Test />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route element={<AuthRoute />}>
                 <Route path="/test2" element={<Test2 />} />
                 <Route path="/logout" element={<Logout />} />
@@ -41,7 +45,6 @@ function App() {
             </Routes>
           </div>
           <Footer />
-        
       </AuthProvider>
       </div>
     </BrowserRouter>

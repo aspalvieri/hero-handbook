@@ -70,7 +70,7 @@ exports.login = (req, res) => {
   db.query("SELECT id, email, password FROM users WHERE email=$1 LIMIT 1", [email]).then(users => {
     // Check if user exists
     if (!users.rows || users.rows.length <= 0) {
-      return res.status(404).json({ message: "Email not found" });
+      return res.status(404).json({ slot: "email", message: "Email not found" });
     }
     const user = users.rows[0];
     // Check password
@@ -83,7 +83,7 @@ exports.login = (req, res) => {
         return res.status(200).json({ user: req.session.user });
       } 
       else {
-        return res.status(400).json({ message: "Password incorrect" });
+        return res.status(400).json({ slot: "password", message: "Password incorrect" });
       }
     });
   }).catch(err => {

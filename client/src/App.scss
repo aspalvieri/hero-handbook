@@ -2,9 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body { 
+#root { 
   margin: 0;
   font-family: "Roboto","Helvetica","Arial",sans-serif;
+  background-color: #F9F9F9;
 }
 
 nav {
@@ -12,10 +13,10 @@ nav {
     li {
       a.active {
         background-color: theme("colors.bsblue.500");
-        border: 2px solid theme("colors.bsblue.500");
+        border: 1px solid theme("colors.bsblue.500");
         color: white;
         @media screen and (max-width: theme("screens.lg")) {
-          border: 0;
+          border-width: 2px;
         }
       }
     }

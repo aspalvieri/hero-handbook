@@ -7,13 +7,13 @@ function Navbar(props) {
 	const auth = useContext(AuthContext);
 	const [navbar, setNavbar] = useState(false);
 
+	//3rd value is false for left-align, true for right-align
 	const user_pages = [
 		["Home", "/", false],
 		["Test", "/test", false],
 		["Test 2", "/test2", false],
 		["Logout", "/logout", true]
 	];
-
 	const guest_pages = [
 		["Home", "/", false],
 		["Test", "/test", false],
@@ -45,8 +45,8 @@ function Navbar(props) {
 						{pages.map((page) => { if (!page[2]) return (
 							<li key={page}>
 								<NavLink to={page[1]}
-									className="block rounded text-white md:text-bsblue-600 bg-bsblue-300 md:bg-transparent py-2 lg:w-24 text-center m-2 
-									lg:m-0 md:border-2 md:hover:border-transparent md:hover:text-white  md:border-bsblue-600  hover:bg-bsblue-600 font-bold"
+									className="block rounded text-bsblue-600 bg-bsblue-300 bg-transparent py-2 lg:w-24 text-center m-2 
+									lg:m-0 lg:border border-2 hover:border-transparent hover:text-white border-bsblue-600 lg:hover:bg-bsblue-600 font-bold"
 								>
 									{page[0]}
 								</NavLink>
@@ -61,8 +61,8 @@ function Navbar(props) {
 						{pages.map((page) => { if (page[2]) return (
 							<li key={page}>
 								<NavLink to={page[1]}
-									className="block rounded text-white md:text-bsblue-600 bg-bsblue-300 md:bg-transparent py-2 lg:w-24 text-center m-2 
-									lg:m-0 md:border-2 md:hover:border-transparent md:hover:text-white  md:border-bsblue-600  hover:bg-bsblue-600 font-bold"
+									className="block rounded text-bsblue-600 bg-bsblue-300 bg-transparent py-2 lg:w-24 text-center m-2 
+									lg:m-0 lg:border border-2 hover:border-transparent hover:text-white border-bsblue-600 lg:hover:bg-bsblue-600 font-bold"
 								>
 									{page[0]}
 								</NavLink>

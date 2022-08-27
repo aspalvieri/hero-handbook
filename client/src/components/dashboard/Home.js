@@ -16,10 +16,11 @@ function Home() {
   }, [loading]);
 
   return (
-    <div>
+    <div className="bg-white rounded-lg shadow col-span-12 md:col-span-8 lg:col-span-6 xl:col-span-4
+    xl:col-start-5 lg:col-start-4 md:col-start-3 p-6">
       {loading ? <h1 style={{textAlign: "center"}}>Loading Data . . .</h1>
       : <div>
-        <table style={{width: "50%", margin: "0 auto", textAlign: "center"}}>
+        <table className="w-full text-center">
           <thead>
             <tr>
               <td style={{width: "30%", fontWeight: "bold", border: "1px solid black"}}>ID</td>
@@ -29,9 +30,9 @@ function Home() {
           <tbody>
             {data.map((row, index) => {
               return (
-                <tr key={index}>
-                  <td style={{backgroundColor: "#fff"}}>{row.id}</td>
-                  <td style={{backgroundColor: "#fff"}}>{row.email}</td>
+                <tr key={index} className="odd:bg-gray-100">
+                  <td>{row.id}</td>
+                  <td>{row.email}</td>
                 </tr>
               );
             })}
