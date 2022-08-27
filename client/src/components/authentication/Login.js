@@ -48,7 +48,7 @@ function Login(props) {
     <div className="bg-white rounded-lg shadow col-span-12 md:col-span-8 lg:col-span-6 xl:col-span-4
       xl:col-start-5 lg:col-start-4 md:col-start-3"
     >
-      <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+      <div className="md:p-6 sm:p-8 space-y-4 md:space-y-6">
         <h1 className="text-xl font-bold text-gray-900 md:text-2xl">
             Login to your account
         </h1>
@@ -82,7 +82,7 @@ function Login(props) {
             Login
           </button>
           <p className="text-sm font-light text-gray-500">
-              Don't have an account yet? <Link to="/register" className="font-medium text-blue-600 hover:underline">Sign up</Link>
+              Don't have an account yet? <Link to="/register" className="font-medium text-blue-600 hover:underline">Register</Link>
           </p>
         </form>
       </div>

@@ -24,7 +24,7 @@ function Navbar(props) {
 	const pages = (auth.user ? user_pages : guest_pages);
 
   return (
-    <nav className="bg-blue-200 border-blue-300 border-b-2 px-2 sm:px-4 py-2.5">
+    <nav className="bg-blue-200 border-blue-300 shadow border-b-2 px-2 sm:px-4 py-2.5">
 			<div className="lg:container flex flex-wrap justify-between lg:justify-start items-center mx-auto px-0 lg:px-4">
 				<Link to="/" className="flex items-center lg:mr-6">
 						<img src={require("../../assets/logo.png")} className="h-16" alt="Hero Handbook Logo" />
