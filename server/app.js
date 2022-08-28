@@ -10,7 +10,6 @@ const port = process.env.PORT || 5000;
 const db = require('./configs/db.config');
 
 let allowedOrigins = [
-  "http://localhost:3000",
   "http://192.168.0.15:3000",
   "https://aspalvieri.com",
   "https://www.aspalvieri.com",
@@ -53,7 +52,8 @@ app.use(
     resave: false,
     cookie: {
       httpOnly: true,
-      domain: (process.env.NODE_ENV === "production" ? ".hero.aspalvieri.com" : ""),
+      sameSite: "strict",
+      domain: (process.env.NODE_ENV === "production" ? ".hero.aspalvieri.com" : "192.168.0.15"),
       maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
     }
   })
