@@ -24,10 +24,11 @@ function Navbar(props) {
 	const pages = (auth.user ? user_pages : guest_pages);
 
   return (
-    <nav className="bg-blue-200 border-blue-300 shadow border-b-2 px-2 sm:px-4 py-2.5">
+    <nav className="bg-blue-200 border-bsblue-300 shadow border-b-2 px-2 sm:px-4 py-2.5">
 			<div className="lg:container flex flex-wrap justify-between lg:justify-start items-center mx-auto px-0 lg:px-4">
+				<div className="lg:hidden"></div>
 				<Link to="/" className="flex items-center lg:mr-6">
-						<img src={require("../../assets/logo.png")} className="h-16" alt="Hero Handbook Logo" />
+						<img src={require("../../assets/logo_v2.png")} className="h-16" alt="Hero Handbook Logo" />
 				</Link>
 				<button type="button" onClick={() => setNavbar(!navbar)}
 					className="inline-flex items-center p-2 mr-3 text-sm text-gray-500 rounded-lg
@@ -45,7 +46,7 @@ function Navbar(props) {
 						{pages.map((page) => { if (!page[2]) return (
 							<li key={page}>
 								<NavLink to={page[1]}
-									className="block rounded text-bsblue-600 bg-bsblue-300 bg-transparent py-2 lg:w-24 text-center m-2 
+									className="block rounded shadow text-bsblue-600 bg-bsblue-300 bg-transparent py-2 lg:w-24 text-center m-2 
 									lg:m-0 lg:border border-2 hover:border-transparent hover:text-white border-bsblue-600 lg:hover:bg-bsblue-600 font-bold"
 								>
 									{page[0]}
@@ -61,7 +62,7 @@ function Navbar(props) {
 						{pages.map((page) => { if (page[2]) return (
 							<li key={page}>
 								<NavLink to={page[1]}
-									className="block rounded text-bsblue-600 bg-bsblue-300 bg-transparent py-2 lg:w-24 text-center m-2 
+									className="block rounded shadow text-bsblue-600 bg-bsblue-300 bg-transparent py-2 lg:w-24 text-center m-2 
 									lg:m-0 lg:border border-2 hover:border-transparent hover:text-white border-bsblue-600 lg:hover:bg-bsblue-600 font-bold"
 								>
 									{page[0]}
