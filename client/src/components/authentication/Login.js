@@ -9,7 +9,7 @@ function Login(props) {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const [user, setUser] = useState({
-    email: "",
+    account: "",
     password: ""
   });
   const [submit, setSubmit] = useState(false);
@@ -45,7 +45,7 @@ function Login(props) {
   }
   
   return(
-    <div className="bg-white rounded-lg shadow col-span-12 md:col-span-8 lg:col-span-6 xl:col-span-4
+    <div className="bg-white shadow-md col-span-12 md:col-span-8 lg:col-span-6 xl:col-span-4
       xl:col-start-5 lg:col-start-4 md:col-start-3"
     >
       <div className="md:p-6 p-4 space-y-4 md:space-y-6">
@@ -54,35 +54,35 @@ function Login(props) {
         </h1>
         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Email:</label>
-            <input type="email" name="email" id="email" autoComplete="email" onChange={handleChange} 
+            <label htmlFor="account" className="block mb-2 text-sm font-medium text-gray-900">Username or Email:</label>
+            <input type="text" name="account" id="account" autoComplete="account" onChange={handleChange} 
               disabled={submit ? true : false} required
-              className={classNames(`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg
-              block w-full p-2.5 disabled:opacity-50`, { "border-red-500": error.slot === "email" })}
+              className={classNames(`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm
+              block w-full p-2.5 disabled:opacity-50`, { "border-red-500": error.slot === "account" })}
             />
           </div>
           <div>
             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Password:</label>
             <input type="password" name="password" id="password" autoComplete="current-password" onChange={handleChange} 
               disabled={submit ? true : false} required
-              className={classNames(`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg
+              className={classNames(`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm
               block w-full p-2.5 disabled:opacity-50`, { "border-red-500": error.slot === "password" })}
             />
           </div>
           <div className="text-red-500">
             {error.message !== "" ? `ERROR: ${error.message}!` : null}
           </div>
-          <div className="flex items-center justify-between">
-              <Link to="/login" className="text-sm font-medium text-blue-600 hover:underline">Forgot password?</Link>
+          <div className="flex items-center">
+              <Link to="/login" className="text-sm font-medium text-heroblue-500 hover:underline">Forgot password?</Link>
           </div>
           <button type="submit" disabled={submit ? true : false}
-            className="w-full text-white bg-bsblue-500 hover:bg-bsblue-600
-            font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50"
+            className="w-full text-white bg-heroblue-500 hover:bg-heroblue-600
+            font-medium text-sm px-5 py-2.5 text-center disabled:opacity-50"
           >
             Login
           </button>
           <p className="text-sm font-light text-gray-500">
-              Don't have an account yet? <Link to="/register" className="font-medium text-blue-600 hover:underline">Register</Link>
+              Don't have an account yet? <Link to="/register" className="font-medium text-heroblue-500 hover:underline">Register</Link>
           </p>
         </form>
       </div>

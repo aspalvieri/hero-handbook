@@ -12,12 +12,8 @@ nav {
   ul {
     li {
       a.active {
-        background-color: theme("colors.bsblue.500");
-        border: 1px solid theme("colors.bsblue.500");
+        background-color: theme("colors.heroblue.500");
         color: white;
-        @media screen and (max-width: theme("screens.lg")) {
-          border-width: 2px;
-        }
       }
     }
   }

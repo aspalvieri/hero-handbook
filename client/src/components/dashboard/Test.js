@@ -32,25 +32,25 @@ function Test() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow col-span-12 md:col-span-8 lg:col-span-6
+    <div className="bg-white shadow-md col-span-12 md:col-span-8 lg:col-span-6
       md:col-start-3 lg:col-start-4 md:p-6 p-4"
     >
       <h1 className="text-xl md:text-2xl font-bold">Task List</h1>
       <form onSubmit={handleSubmit}>
         <input ref={inputRef} 
-          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg
+          className="bg-gray-50 border border-gray-300 text-gray-900
           block w-60 my-2 p-1.5 disabled:opacity-50" 
         />
       </form>
       <button onClick={() => dispatch({ type: "clear" })}
-        className="text-white bg-red-500 hover:bg-red-600
-        font-medium rounded-lg text-sm px-3 mr-2 py-1 text-center"
+        className="text-white bg-bsred-500 hover:bg-bsred-600
+        font-medium text-sm px-3 mr-2 py-1 text-center"
       >
         Clear All
       </button>
       <button onClick={handleSubmit}
-        className="text-white bg-bsgreen-500 hover:bg-bsgreen-600
-        font-medium rounded-lg text-sm px-3 py-1 text-center"
+        className="text-white bg-heroblue-500 hover:bg-heroblue-600
+        font-medium text-sm px-3 py-1 text-center"
       >
         Add Task
       </button>
@@ -59,8 +59,8 @@ function Test() {
           <li key={item.id} className="my-1">
             {item.name}{" "}
             <button onClick={() => dispatch({ type: "remove", index })}
-              className="text-white bg-red-500 hover:bg-red-600
-              font-medium rounded-lg text-sm px-2 py-1 text-center"
+              className="text-white bg-bsred-500 hover:bg-bsred-600
+              font-medium text-sm px-2 py-1 text-center"
             >
               X
             </button>

@@ -9,16 +9,19 @@ chai.use(chaiHttp);
 
 describe("/users", () => {
   before((done) => {
-    db.query("DELETE FROM users WHERE email='test@test.com'").then(() => {
-      done();
+    db.query("DELETE FROM users WHERE id > 3").then(() => {
+      db.query("SELECT SETVAL('users_id_seq', MAX(id)) FROM users").then(() => {
+        done();
+      });
     });
   });
   describe("POST /register", () => {
     it("it should create a new user (test@test.com)", (done) => {
       const user = {
+        username: "test",
         email: "test@test.com",
-        password: "123456",
-        password2: "123456"
+        password: "    ",
+        password2: "    "
       };
       chai.request(app).post("/users/register")
       .send(user)
@@ -31,6 +34,7 @@ describe("/users", () => {
     });
     it("it should NOT create a new user (email exists)", (done) => {
       const user = {
+        username: "alex2",
         email: "alex@email.com",
         password: "123456",
         password2: "123456"
@@ -43,11 +47,26 @@ describe("/users", () => {
         done();
       });
     });
+    it("it should NOT create a new user (username exists)", (done) => {
+      const user = {
+        username: "alex",
+        email: "alex2@email.com",
+        password: "123456",
+        password2: "123456"
+      };
+      chai.request(app).post("/users/register")
+      .send(user)
+      .end((err, res) => {
+        expect(res.status).to.eq(400);
+        expect(res.body.message).to.eq("Username already exists");
+        done();
+      });
+    });
   });
   describe("POST /login", () => {
     it("it should login user in (alex@email.com)", (done) => {
       const user = {
-        email: "alex@email.com",
+        account: "alex@email.com",
         password: "1234"
       };
       chai.request(app).post("/users/login")
@@ -59,17 +78,101 @@ describe("/users", () => {
         done();
       });
     });
-    it("it should login user in (user@email.com)", (done) => {
+    it("it should login user in (hero)", (done) => {
       const user = {
-        email: "user@email.com",
-        password: "123456"
+        account: "hero",
+        password: "1234"
       };
       chai.request(app).post("/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
-        expect(user.id).to.eq(2);
+        expect(user.id).to.eq(3);
         expect(res.status).to.eq(200);
+        done();
+      });
+    });
+    it("it should login user in (test@test.com)", (done) => {
+      const user = {
+        account: "test@test.com",
+        password: "    "
+      };
+      chai.request(app).post("/users/login")
+      .send(user)
+      .end((err, res) => {
+        const user = res.body.user;
+        expect(user.id).to.eq(4);
+        expect(res.status).to.eq(200);
+        done();
+      });
+    });
+    it("it should NOT login user in (Password incorrect)", (done) => {
+      const user = {
+        account: "user@email.com",
+        password: "abcd"
+      };
+      chai.request(app).post("/users/login")
+      .send(user)
+      .end((err, res) => {
+        const user = res.body.user;
+        expect(res.body.message).to.eq("Password incorrect");
+        expect(res.status).to.eq(400);
+        done();
+      });
+    });
+    it("it should NOT login user in (Account not found)", (done) => {
+      const user = {
+        account: "fakeuser@email.com",
+        password: "1234"
+      };
+      chai.request(app).post("/users/login")
+      .send(user)
+      .end((err, res) => {
+        const user = res.body.user;
+        expect(res.body.message).to.eq("Account not found");
+        expect(res.status).to.eq(404);
+        done();
+      });
+    });
+    it("it should NOT login user in (Invalid account - spaces)", (done) => {
+      const user = {
+        account: "   ",
+        password: "abcd"
+      };
+      chai.request(app).post("/users/login")
+      .send(user)
+      .end((err, res) => {
+        const user = res.body.user;
+        expect(res.body.message).to.eq("Invalid account");
+        expect(res.status).to.eq(400);
+        done();
+      });
+    });
+    it("it should NOT login user in (Invalid account - non-alphanumeric)", (done) => {
+      const user = {
+        account: "hero123@",
+        password: "1234"
+      };
+      chai.request(app).post("/users/login")
+      .send(user)
+      .end((err, res) => {
+        const user = res.body.user;
+        expect(res.body.message).to.eq("Invalid account");
+        expect(res.status).to.eq(400);
+        done();
+      });
+    });
+    it("it should NOT login user in (Invalid password)", (done) => {
+      const user = {
+        account: "alex@email.com",
+        password: ""
+      };
+      chai.request(app).post("/users/login")
+      .send(user)
+      .end((err, res) => {
+        const user = res.body.user;
+        expect(res.body.message).to.eq("Invalid password");
+        expect(res.status).to.eq(400);
         done();
       });
     });
