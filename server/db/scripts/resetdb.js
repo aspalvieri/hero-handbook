@@ -40,7 +40,7 @@ const hashPasswords = async db => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(user.password, salt);
     console.log(`\t Updating ${user.email}`);
-    await db.query(`UPDATE users SET password='${hash}' WHERE id=${user.id}`);
+    await db.query(`UPDATE users SET password='${hash}' WHERE id='${user.id}'`);
   }
 };
 

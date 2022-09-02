@@ -9,10 +9,10 @@ chai.use(chaiHttp);
 
 describe("/users", () => {
   before((done) => {
-    db.query("DELETE FROM users WHERE id > 3").then(() => {
-      db.query("SELECT SETVAL('users_id_seq', MAX(id)) FROM users").then(() => {
+    db.query("DELETE FROM users WHERE email LIKE '%@test.com'").then(() => {
+      //db.query("SELECT SETVAL('users_id_seq', MAX(id)) FROM users").then(() => {
         done();
-      });
+      //});
     });
   });
   describe("POST /register", () => {
@@ -73,7 +73,7 @@ describe("/users", () => {
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
-        expect(user.id).to.eq(1);
+        expect(user.username).to.eq("alex");
         expect(res.status).to.eq(200);
         done();
       });
@@ -87,7 +87,7 @@ describe("/users", () => {
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
-        expect(user.id).to.eq(3);
+        expect(user.email).to.eq("hero@handbook.com");
         expect(res.status).to.eq(200);
         done();
       });
@@ -101,7 +101,7 @@ describe("/users", () => {
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
-        expect(user.id).to.eq(4);
+        expect(user.username).to.eq("test");
         expect(res.status).to.eq(200);
         done();
       });

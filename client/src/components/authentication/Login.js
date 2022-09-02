@@ -60,6 +60,9 @@ function Login(props) {
               className={classNames(`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm
               block w-full p-2.5 disabled:opacity-50`, { "border-red-500": error.slot === "account" })}
             />
+            <span className="text-red-500 block mt-1">
+              {(error.slot === "account" && error.message !== "") ? `${error.message}!` : null}
+            </span>
           </div>
           <div>
             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Password:</label>
@@ -68,9 +71,9 @@ function Login(props) {
               className={classNames(`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm
               block w-full p-2.5 disabled:opacity-50`, { "border-red-500": error.slot === "password" })}
             />
-          </div>
-          <div className="text-red-500">
-            {error.message !== "" ? `ERROR: ${error.message}!` : null}
+            <span className="text-red-500 block mt-1">
+              {(error.slot === "password" && error.message !== "") ? `${error.message}!` : null}
+            </span>
           </div>
           <div className="flex items-center">
               <Link to="/login" className="text-sm font-medium text-heroblue-500 hover:underline">Forgot password?</Link>

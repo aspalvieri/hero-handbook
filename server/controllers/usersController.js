@@ -46,7 +46,7 @@ exports.register = (req, res) => {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(password, salt, (err, hash) => {
           if (err) throw err;
-          db.query("INSERT INTO users(id, username, email, password) VALUES(DEFAULT, $1, $2, $3) RETURNING *", [username, email, hash]).then(user => {
+          db.query("INSERT INTO users(username, email, password) VALUES($1, $2, $3) RETURNING id, username, email", [username, email, hash]).then(user => {
             req.session.user = {
               id: user.rows[0].id,
               username: user.rows[0].username,
