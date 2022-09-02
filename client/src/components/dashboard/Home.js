@@ -35,7 +35,7 @@ function Home() {
           <tbody>
             {data.map((row, index) => {
               return (
-                <tr key={index} className="odd:bg-gray-100 hover:bg-gray-200">
+                <tr key={index} className="odd:bg-gray-100 hover:bg-gray-200 break-all">
                   <td>{row.id}</td>
                   <td>{row.username}</td>
                   <td>{row.email}</td>

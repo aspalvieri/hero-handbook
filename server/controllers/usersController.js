@@ -57,11 +57,11 @@ exports.register = (req, res) => {
 
   db.query("SELECT username, email FROM users WHERE username ILIKE $1 OR email ILIKE $2 LIMIT 1", [username, email]).then(users => {
     if (users.rows && users.rows.length >= 1) {
-      if (users.rows[0].email === email) {
-        return res.status(400).json({ slot: "email", message: "Email already exists" });
+      if (users.rows[0].username.toUpperCase() === username.toUpperCase()) {
+        return res.status(400).json({ slot: "username", message: "Username already exists" });
       }
       else {
-        return res.status(400).json({ slot: "username", message: "Username already exists" });
+        return res.status(400).json({ slot: "email", message: "Email already exists" });
       }
     }
     else {
@@ -69,9 +69,8 @@ exports.register = (req, res) => {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(password, salt, (err, hash) => {
           if (err) throw err;
-          db.query("INSERT INTO users(username, email, password) VALUES($1, $2, $3) RETURNING id, username, email", [username, email, hash]).then(user => {
+          db.query("INSERT INTO users(username, email, password) VALUES($1, $2, $3) RETURNING username, email", [username, email, hash]).then(user => {
             req.session.user = {
-              id: user.rows[0].id,
               username: user.rows[0].username,
               email: user.rows[0].email
             };
@@ -104,7 +103,7 @@ exports.login = (req, res) => {
 
   const db = req.database;
   // Find user by email
-  db.query("SELECT id, username, email, password FROM users WHERE username ILIKE $1 OR email ILIKE $1 LIMIT 1", [account]).then(users => {
+  db.query("SELECT username, email, password FROM users WHERE username ILIKE $1 OR email ILIKE $1 LIMIT 1", [account]).then(users => {
     // Check if user exists
     if (!users.rows || users.rows.length <= 0) {
       return res.status(404).json({ slot: "account", message: "Account not found" });
@@ -114,7 +113,6 @@ exports.login = (req, res) => {
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (isMatch) {
         req.session.user = {
-          id: user.id,
           username: user.username,
           email: user.email
         };
