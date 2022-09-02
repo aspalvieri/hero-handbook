@@ -2,11 +2,11 @@ DROP TABLE IF EXISTS users CASCADE;
 -- CREATE USERS
 CREATE TABLE users (
   id uuid NOT NULL DEFAULT uuid_generate_v4(),
-  username VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
+  username VARCHAR(20) NOT NULL,
+  email VARCHAR(320) NOT NULL,
   password VARCHAR(255) NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT pk_users PRIMARY KEY (id),
-  CONSTRAINT uk_users_account UNIQUE (email, username)
+  CONSTRAINT uq_users_account UNIQUE (email, username)
 );

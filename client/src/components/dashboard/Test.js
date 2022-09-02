@@ -43,7 +43,7 @@ function Test() {
         />
       </form>
       <button onClick={() => dispatch({ type: "clear" })}
-        className="text-white bg-bsred-500 hover:bg-bsred-600
+        className="text-white bg-slate-500 hover:bg-slate-600
         font-medium text-sm px-3 mr-2 py-1 text-center"
       >
         Clear All
@@ -59,7 +59,7 @@ function Test() {
           <li key={item.id} className="my-1">
             {item.name}{" "}
             <button onClick={() => dispatch({ type: "remove", index })}
-              className="text-white bg-bsred-500 hover:bg-bsred-600
+              className="text-white bg-slate-500 hover:bg-slate-600
               font-medium text-sm px-2 py-1 text-center"
             >
               X

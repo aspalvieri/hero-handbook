@@ -13,7 +13,7 @@ exports.test = (req, res) => {
 exports.pass = (req, res) => {
   const db = req.database;
   const user = req.session.user;
-  db.query("SELECT password FROM users WHERE id=$1 AND email=$2", [user.id, user.email]).then(pass => {
+  db.query("SELECT password FROM users WHERE id = $1 AND email ILIKE $2", [user.id, user.email]).then(pass => {
     return res.status(200).json(pass.rows[0]);
   }).catch(err => {
     console.log(err);
@@ -22,24 +22,47 @@ exports.pass = (req, res) => {
 }
 
 exports.register = (req, res) => {
-  // TODO: Form validation
   const username = req.body.username;
   const email = req.body.email;
-  const password = req.body.password;
-  const password2 = req.body.password2;
+  const password_inc = req.body.password;
+  const password2_inc = req.body.password2;
+
+  if (typeof(username) !== "string" || validator.isEmpty(username) || !validator.isAlphanumeric(username)) {
+    return res.status(400).json({ slot: "username", message: "Invalid username" });
+  }
+  else if (username.length < 4) {
+    return res.status(400).json({ slot: "username", message: "Username too short" });
+  }
+  else if (username.length > 20) {
+    return res.status(400).json({ slot: "username", message: "Username too long" });
+  }
+  if (typeof(email) !== "string" || validator.isEmpty(email) || !validator.isEmail(email) || email.length > 320) {
+    return res.status(400).json({ slot: "email", message: "Invalid email" });
+  }
+  if ((typeof(password_inc) !== "string" || typeof(password2_inc) !== "string") || (validator.isEmpty(password_inc) || validator.isEmpty(password2_inc))) {
+    return res.status(400).json({ slot: "password", message: "Invalid password" });
+  }
+
+  const password = password_inc.substring(0, 255);
+  const password2 = password2_inc.substring(0, 255);
 
   if (password !== password2) {
-    return res.status(400).json({ message: "Passwords don't match" });
+    return res.status(400).json({ slot: "password", message: "Passwords do not match" });
+  }
+  else if (password.length < 4) {
+    return res.status(400).json({ slot: "password", message: "Password too short" });
   }
 
   const db = req.database;
 
-  db.query("SELECT username, email FROM users WHERE username=$1 OR email=$2 LIMIT 1", [username, email]).then(users => {
+  db.query("SELECT username, email FROM users WHERE username ILIKE $1 OR email ILIKE $2 LIMIT 1", [username, email]).then(users => {
     if (users.rows && users.rows.length >= 1) {
-      if (users.rows[0].email === email)
-        return res.status(400).json({ message: "Email already exists" });
-      else
-        return res.status(400).json({ message: "Username already exists" });
+      if (users.rows[0].email === email) {
+        return res.status(400).json({ slot: "email", message: "Email already exists" });
+      }
+      else {
+        return res.status(400).json({ slot: "username", message: "Username already exists" });
+      }
     }
     else {
       // Hash password before saving in database
@@ -55,14 +78,14 @@ exports.register = (req, res) => {
             return res.status(200).json({ user: req.session.user });
           }).catch(err => {
             console.log(err);
-            return res.status(400).json({ message: err });
+            return res.status(400).json({ slot: "username", message: err });
           })
         });
       });
     }
   }).catch(err => {
     console.log(err);
-    return res.status(400).json({ message: err });
+    return res.status(400).json({ slot: "username", message: err });
   });
 };
 
@@ -70,18 +93,18 @@ exports.login = (req, res) => {
   const account = req.body.account;
   const password_inc = req.body.password;
 
-  if (typeof(account) !== "string" || validator.isEmpty(account) || (!validator.isEmail(account) && !validator.isAlphanumeric(account))) {
+  if (typeof(account) !== "string" || validator.isEmpty(account) || (!validator.isEmail(account) && !validator.isAlphanumeric(account)) || account.length > 320) {
     return res.status(400).json({ slot: "account", message: "Invalid account" });
   }
   if (typeof(password_inc) !== "string" || validator.isEmpty(password_inc)) {
     return res.status(400).json({ slot: "password", message: "Invalid password" });
   }
 
-  const password = password_inc.substring(0, 256);
+  const password = password_inc.substring(0, 255);
 
   const db = req.database;
   // Find user by email
-  db.query("SELECT id, username, email, password FROM users WHERE username=$1 OR email=$1 LIMIT 1", [account]).then(users => {
+  db.query("SELECT id, username, email, password FROM users WHERE username ILIKE $1 OR email ILIKE $1 LIMIT 1", [account]).then(users => {
     // Check if user exists
     if (!users.rows || users.rows.length <= 0) {
       return res.status(404).json({ slot: "account", message: "Account not found" });
@@ -103,7 +126,7 @@ exports.login = (req, res) => {
     });
   }).catch(err => {
     console.log(err);
-    return res.status(400).json({ message: err });
+    return res.status(400).json({ slot: "account", message: err });
   });
 };
 

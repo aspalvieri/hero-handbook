@@ -27,9 +27,9 @@ function Home() {
         <table className="w-full text-center">
           <thead>
             <tr>
-              <td style={{width: "15%", fontWeight: "bold", border: "1px solid black"}}>ID</td>
+              <td style={{width: "30%", fontWeight: "bold", border: "1px solid black"}}>ID</td>
               <td style={{width: "30%", fontWeight: "bold", border: "1px solid black"}}>Username</td>
-              <td style={{width: "55%", fontWeight: "bold", border: "1px solid black"}}>Email</td>
+              <td style={{width: "40%", fontWeight: "bold", border: "1px solid black"}}>Email</td>
             </tr>
           </thead>
           <tbody>
