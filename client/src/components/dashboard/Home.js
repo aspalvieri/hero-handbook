@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios"
-import { config, requestConf } from "../../utils/Configs";
 import { AuthContext } from "../../providers/AuthProvider";
 
 function Home() {
@@ -10,7 +9,7 @@ function Home() {
 
   useEffect(() => {
     if (loading) {
-      axios.get(`${config.SERVER_URL}/users/test`, requestConf).then(res => {
+      axios.get(`/api/users/test`).then(res => {
         setData(res.data);
         setLoading(false);
       });

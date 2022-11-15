@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS users CASCADE;
 -- CREATE USERS
 CREATE TABLE users (
-  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
   username VARCHAR(20) NOT NULL,
   email VARCHAR(320) NOT NULL,
   password VARCHAR(255) NOT NULL,

@@ -1,6 +1,6 @@
 runtime: nodejs16
 
-service: api
+service: default
 
 instance_class: F1
 automatic_scaling:
@@ -21,3 +21,8 @@ inbound_services:
 includes:
   - env.yaml
   
+handlers:
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto

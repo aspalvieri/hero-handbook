@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "deploy": "gcloud app deploy --project hero-aspalvieri --quiet",
+    "deploy": "npm --prefix ../client/ run build && gcloud app deploy --project hero-aspalvieri --quiet",
     "test": "SET DB_DATABASE=herohandbook_test&& mocha tests/index.test.js --exit",
     "db_reset": "node db/scripts/resetdb.js --exit",
     "db_reset_test": "SET DB_DATABASE=herohandbook_test&& node db/scripts/resetdb.js --exit"

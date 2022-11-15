@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../providers/AuthProvider";
-import { config, requestConf } from "../../utils/Configs";
 import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
@@ -35,7 +34,7 @@ function Register(props) {
     event.preventDefault();
     if (!submit) {
       setSubmit(true);
-      axios.post(`${config.SERVER_URL}/users/register`, user, requestConf).then(res => {
+      axios.post(`/api/users/register`, user).then(res => {
         auth.setUser(res.data.user);
         navigate("/");
       }).catch(err => {

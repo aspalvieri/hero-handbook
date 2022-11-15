@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { config, requestConf } from "../utils/Configs";
 import axios from "axios";
 
 const AuthContext = createContext();
@@ -10,7 +9,7 @@ function AuthProvider(props) {
   const [fetchingUser, setFetchingUser] = useState(true);
 
   useEffect(() => {
-    axios.get(`${config.SERVER_URL}/users/fetchUser`, requestConf).then(res => {
+    axios.get(`/api/users/fetchUser`).then(res => {
       setUser(res.data.user);
     }).catch(err => {
       console.log(`No user session exists.`);

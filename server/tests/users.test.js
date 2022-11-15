@@ -23,7 +23,7 @@ describe("/users", () => {
         password: "AbCd1234",
         password2: "AbCd1234"
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -39,7 +39,7 @@ describe("/users", () => {
         password: "    ",
         password2: "    "
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -55,7 +55,7 @@ describe("/users", () => {
         password: "123456",
         password2: "123456"
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         expect(res.status).to.eq(400);
@@ -70,7 +70,7 @@ describe("/users", () => {
         password: "123456",
         password2: "1234567"
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         expect(res.status).to.eq(400);
@@ -85,7 +85,7 @@ describe("/users", () => {
         password: "123",
         password2: "123"
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         expect(res.status).to.eq(400);
@@ -100,7 +100,7 @@ describe("/users", () => {
         password: "123456",
         password2: "123456"
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         expect(res.status).to.eq(400);
@@ -115,7 +115,7 @@ describe("/users", () => {
         password: "123456",
         password2: "123456"
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         expect(res.status).to.eq(400);
@@ -130,7 +130,7 @@ describe("/users", () => {
         password: "123456",
         password2: "123456"
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         expect(res.status).to.eq(400);
@@ -145,7 +145,7 @@ describe("/users", () => {
         password: "123456",
         password2: "123456"
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         expect(res.status).to.eq(400);
@@ -160,7 +160,7 @@ describe("/users", () => {
         password: "123456",
         password2: "123456"
       };
-      chai.request(app).post("/users/register")
+      chai.request(app).post("/api/users/register")
       .send(user)
       .end((err, res) => {
         expect(res.status).to.eq(400);
@@ -175,7 +175,7 @@ describe("/users", () => {
         account: "alex@email.com",
         password: "1234"
       };
-      chai.request(app).post("/users/login")
+      chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -189,7 +189,7 @@ describe("/users", () => {
         account: "hero",
         password: "1234"
       };
-      chai.request(app).post("/users/login")
+      chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -203,7 +203,7 @@ describe("/users", () => {
         account: "test@test.com",
         password: "AbCd1234"
       };
-      chai.request(app).post("/users/login")
+      chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -217,7 +217,7 @@ describe("/users", () => {
         account: "test",
         password: "abcd1234"
       };
-      chai.request(app).post("/users/login")
+      chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -231,7 +231,7 @@ describe("/users", () => {
         account: "fakeuser@email.com",
         password: "1234"
       };
-      chai.request(app).post("/users/login")
+      chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -245,7 +245,7 @@ describe("/users", () => {
         account: "   ",
         password: "abcd"
       };
-      chai.request(app).post("/users/login")
+      chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -259,7 +259,7 @@ describe("/users", () => {
         account: "hero123@",
         password: "1234"
       };
-      chai.request(app).post("/users/login")
+      chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
@@ -273,7 +273,7 @@ describe("/users", () => {
         account: "alex@email.com",
         password: ""
       };
-      chai.request(app).post("/users/login")
+      chai.request(app).post("/api/users/login")
       .send(user)
       .end((err, res) => {
         const user = res.body.user;
