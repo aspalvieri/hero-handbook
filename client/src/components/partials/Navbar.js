@@ -35,7 +35,7 @@ function Navbar(props) {
 			<div className="lg:container flex flex-wrap justify-between lg:justify-start items-center mx-auto px-0 lg:px-4 lg:h-full">
 				<div className="lg:hidden"></div>
 				<Link to="/" onClick={() => closeMobileBar("/")} className="flex items-center lg:mr-4">
-						<img src={require("../../assets/logo_v2.png")} className="h-16" alt="Hero Handbook Logo" />
+						<img src={require("../../assets/logo.webp")} className="h-16" alt="Hero Handbook Logo" />
 				</Link>
 				<button type="button" onClick={() => setNavbar(!navbar)}
 					className="inline-flex items-center p-2 mr-3 text-sm text-gray-500
