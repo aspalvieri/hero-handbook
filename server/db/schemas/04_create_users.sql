@@ -5,8 +5,10 @@ CREATE TABLE users (
   username VARCHAR(20) NOT NULL,
   email VARCHAR(320) NOT NULL,
   password VARCHAR(255) NOT NULL,
+  role_id uuid NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT pk_users PRIMARY KEY (id),
+  CONSTRAINT fk_users_role_id FOREIGN KEY (role_id) REFERENCES roles(id),
   CONSTRAINT uq_users_account UNIQUE (email, username)
 );

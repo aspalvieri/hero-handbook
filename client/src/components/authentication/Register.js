@@ -95,6 +95,12 @@ function Register(props) {
               {(error.slot === "password" && error.message !== "") ? `${error.message}!` : null}
             </span>
           </div>
+          {(error.slot === "message" && error.message !== "") 
+          ?
+          <p className="text-red-500 block mt-1">
+            {error.message}
+          </p>
+          : null}
           <button type="submit" disabled={submit ? true : false}
             className="w-full text-white bg-heroblue-500 hover:bg-heroblue-600
             font-medium text-sm px-5 py-2.5 text-center disabled:opacity-50"

@@ -28,8 +28,8 @@ import "./App.scss";
 function App() {
   return (
     <BrowserRouter>
-    <div className="h-screen flex flex-col">
-      <AuthProvider>
+      <div className="h-screen flex flex-col">
+        <AuthProvider>
           <Navbar />
           <div className="lg:container lg:mx-auto grid grid-cols-12 p-4">
             <Routes>
@@ -45,7 +45,7 @@ function App() {
             </Routes>
           </div>
           <Footer />
-      </AuthProvider>
+        </AuthProvider>
       </div>
     </BrowserRouter>
   );

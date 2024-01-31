@@ -1,0 +1,8 @@
+-- users seeds
+INSERT INTO permissions(name) VALUES
+-- USERS PERMISSIONS
+('USERS_LIST'),
+('USERS_DISPLAY'),
+
+-- ROLES PERMISSIONS
+('ROLES_LIST');

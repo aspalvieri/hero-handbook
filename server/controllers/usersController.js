@@ -1,15 +1,11 @@
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+const userQueries = require("../db/queries/users");
+const roleQueries = require("../db/queries/roles");
 
-exports.test = (req, res) => {
-  const db = req.database;
-  db.query("SELECT id, username, email FROM users").then(users => {
-    return res.status(200).json(users.rows);
-  }).catch(err => {
-    return res.status(500).json({"error": err});
-  });
-};
+const defaultUserRole = "USER";
 
+// TEST - DELETE LATER
 exports.pass = (req, res) => {
   const db = req.database;
   const user = req.session.user;
@@ -19,7 +15,31 @@ exports.pass = (req, res) => {
     console.log(err);
     return res.status(400).json({ message: err });
   });
-}
+};
+
+exports.listUsers = (req, res) => {
+  const db = req.database;
+  userQueries.getAllUsers(db).then(users => {
+    return res.status(200).json(users.rows);
+  }).catch(err => {
+    console.log(err);
+    return res.status(500).json({"error": err});
+  });
+};
+
+exports.getUser = (req, res) => {
+  const db = req.database;
+  userQueries.getUserById(db, req.params.id).then(user => {
+    if (!user.rows || user.rows.length <= 0) {
+      return res.status(500).json({"error": "User not found!"});
+    }
+
+    return res.status(200).json(user.rows[0]);
+  }).catch(err => {
+    console.log(err);
+    return res.status(500).json({"error": err});
+  });
+};
 
 exports.register = (req, res) => {
   const username = req.body.username;
@@ -55,36 +75,63 @@ exports.register = (req, res) => {
 
   const db = req.database;
 
-  db.query("SELECT username, email FROM users WHERE username ILIKE $1 OR email ILIKE $2 LIMIT 1", [username, email]).then(users => {
+  userQueries.getUserByAccount(db, username, email).then(users => {
     if (users.rows && users.rows.length >= 1) {
       if (users.rows[0].username.toUpperCase() === username.toUpperCase()) {
         return res.status(400).json({ slot: "username", message: "Username already exists" });
       }
-      else {
-        return res.status(400).json({ slot: "email", message: "Email already exists" });
-      }
+      
+      return res.status(400).json({ slot: "email", message: "Email already exists" });
     }
     else {
-      // Hash password before saving in database
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(password, salt, (err, hash) => {
-          if (err) throw err;
-          db.query("INSERT INTO users(username, email, password) VALUES($1, $2, $3) RETURNING username, email", [username, email, hash]).then(user => {
-            req.session.user = {
-              username: user.rows[0].username,
-              email: user.rows[0].email
-            };
-            return res.status(200).json({ user: req.session.user });
-          }).catch(err => {
-            console.log(err);
-            return res.status(400).json({ slot: "username", message: err });
-          })
+      roleQueries.getRoleByName(db, defaultUserRole).then(role => {
+        if (!role.rows || role.rows.length <= 0) {
+          return res.status(400).json({ slot: "message", message: "Error getting info for role USER" });
+        }
+
+        const roleId = role.rows[0].id;
+
+        // Hash password before saving in database
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(password, salt, (err, hash) => {
+            if (err) throw err;
+            userQueries.createNewUser(db, username, email, hash, roleId).then(user => {
+              if (user.rows && user.rows.length > 0) {
+                userQueries.getUserById(db, user.rows[0].id).then(regUser => {
+                  const loggedUser = regUser.rows[0];
+                  const permissions = loggedUser.permissions.map(permission => permission.name);
+
+                  req.session.user = {
+                    id: loggedUser.id,
+                    username: loggedUser.username,
+                    email: loggedUser.email,
+                    role: loggedUser.role_name,
+                    permissions: permissions
+                  };
+
+                  return res.status(200).json({ user: req.session.user });
+                }).catch(err => {
+                  console.log(err);
+                  return res.status(400).json({ slot: "message", message: err.hint });
+                });
+              }
+              else {
+                return res.status(400).json({ error: "Failed to register user" });
+              }
+            }).catch(err => {
+              console.log(err);
+              return res.status(400).json({ slot: "username", message: err });
+            })
+          });
         });
+      }).catch(err => {
+        console.log(err);
+        return res.status(400).json({ slot: "message", message: err.hint });
       });
     }
   }).catch(err => {
     console.log(err);
-    return res.status(400).json({ slot: "username", message: err });
+    return res.status(400).json({ slot: "message", message: err.hint });
   });
 };
 
@@ -103,24 +150,38 @@ exports.login = (req, res) => {
 
   const db = req.database;
   // Find user by email
-  db.query("SELECT username, email, password FROM users WHERE username ILIKE $1 OR email ILIKE $1 LIMIT 1", [account]).then(users => {
+  userQueries.getUserByAccount(db, account, account).then(users => {
     // Check if user exists
     if (!users.rows || users.rows.length <= 0) {
       return res.status(404).json({ slot: "account", message: "Account not found" });
     }
+
     const user = users.rows[0];
-    // Check password
-    bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (isMatch) {
-        req.session.user = {
-          username: user.username,
-          email: user.email
-        };
-        return res.status(200).json({ user: req.session.user });
-      } 
-      else {
-        return res.status(400).json({ slot: "password", message: "Password incorrect" });
-      }
+
+    userQueries.getUserPasswordById(db, user.id).then(userPasswords => {
+      const userPassword = userPasswords.rows[0].password;
+      // Check password
+      bcrypt.compare(password, userPassword, (err, isMatch) => {
+        if (isMatch) {
+          const permissions = user.permissions.map(permission => permission.name);
+
+          req.session.user = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role_name,
+            permissions: permissions
+          };
+
+          return res.status(200).json({ user: req.session.user });
+        } 
+        else {
+          return res.status(400).json({ slot: "password", message: "Password incorrect" });
+        }
+      });
+    }).catch(err => {
+      console.log(err);
+      return res.status(400).json({ slot: "account", message: err });
     });
   }).catch(err => {
     console.log(err);
@@ -136,7 +197,7 @@ exports.logout = async (req, res) => {
     console.error(e);
     return res.sendStatus(500);
   }
-}
+};
 
 exports.fetchUser = (req, res) => {
   if (req.sessionID && req.session.user) {
