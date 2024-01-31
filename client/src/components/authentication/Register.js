@@ -108,7 +108,7 @@ function Register(props) {
             Register
           </button>
           <p className="text-sm font-light text-gray-500">
-              Already have an account? <Link to="/login" className="font-medium text-heroblue-500 hover:underline">Login</Link>
+              Already have an account? <Link to="/login" className="font-medium text-heroblue-500 hover:underline">Login here.</Link>
           </p>
         </form>
       </div>

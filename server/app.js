@@ -48,7 +48,7 @@ app.use("/api", routes);
 // Serve the static files from the React app
 const cacheAge = 1000 * 60 * 60 * 24 * 365; // 365 days
 app.use("/static", express.static(path.join(__dirname, "client/static"), { maxAge: cacheAge }));
-app.use(express.static(path.join(__dirname, "client")));
+app.use(express.static(path.join(__dirname, "client"), { etag: false, lastModified: false }));
 
 app.get("/_ah/warmup", (req, res) => {
   console.log("Warmup requested.");

@@ -9,20 +9,20 @@ function Navbar(props) {
 	const location = useLocation();
 
 	//3rd value is false for left-align, true for right-align
-	const user_pages = [
+	const userPages = [
 		["Home", "/", false],
 		["Test", "/test", false],
 		["Test 2", "/test2", false],
 		["Logout", "/logout", true]
 	];
-	const guest_pages = [
+	const guestPages = [
 		["Home", "/", false],
 		["Test", "/test", false],
 		["Login", "/login", true],
 		["Register", "/register", true]
 	];
 
-	const pages = (auth.user ? user_pages : guest_pages);
+	const pages = (auth.user ? userPages : guestPages);
 
 	function closeMobileBar(newPage) {
 		if (location.pathname !== newPage) {

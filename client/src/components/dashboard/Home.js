@@ -37,6 +37,7 @@ function Home() {
         {loading ? <h1 style={{textAlign: "center"}}>Loading Data . . .</h1>
         : 
         <div>
+          <h1>Users</h1>
           {users.length === 0 ? <h1 style={{textAlign: "center"}}>Insufficient Permissions to view Users</h1>
           :
           <table className="w-full text-center">
@@ -68,8 +69,9 @@ function Home() {
       <div className="bg-white shadow-md col-span-12 md:col-span-8 lg:col-span-6
         md:col-start-3 lg:col-start-4 md:p-6 p-4 mt-3"
       >
+        <h1>Roles</h1>
         {loading ? <h1 style={{textAlign: "center"}}>Loading Data . . .</h1>
-        : 
+        :
         <div>
           {roles.length === 0 ? <h1 style={{textAlign: "center"}}>Insufficient Permissions to view Roles</h1>
           :

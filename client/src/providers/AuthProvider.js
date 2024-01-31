@@ -4,7 +4,6 @@ import axios from "axios";
 const AuthContext = createContext();
 
 function AuthProvider(props) {
-
   const [user, setUser] = useState(null);
   const [fetchingUser, setFetchingUser] = useState(true);
 

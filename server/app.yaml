@@ -20,7 +20,7 @@ inbound_services:
 
 includes:
   - env.yaml
-  
+
 handlers:
   - url: /.*
     secure: always

@@ -75,6 +75,7 @@ function Login(props) {
             </span>
           </div>
           <div className="flex items-center">
+              {/* TODO: make the forgot password */}
               <Link to="/login" className="text-sm font-medium text-heroblue-500 hover:underline">Forgot password?</Link>
           </div>
           <button type="submit" disabled={submit ? true : false}
@@ -84,7 +85,7 @@ function Login(props) {
             Login
           </button>
           <p className="text-sm font-light text-gray-500">
-              Don't have an account yet? <Link to="/register" className="font-medium text-heroblue-500 hover:underline">Register</Link>
+              Don't have an account yet? <Link to="/register" className="font-medium text-heroblue-500 hover:underline">Register here.</Link>
           </p>
         </form>
       </div>
